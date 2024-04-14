@@ -115,7 +115,7 @@ public class FormateurService {
             Formateur formateur =new Formateur().builder()
                     .dateNaissance(date)
                     .email("qsdmlj@jj.kk")
-                    .password("namnamnam")
+                    .password("hh")
                     .nom("3abes")
                     .phoneNumber("21123058")
                     .role(Role.Formateur)
