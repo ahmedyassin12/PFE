@@ -50,6 +50,11 @@ public class ManagerController {
         Optional<Manager> manager = managerService.getManagerByEmail(Email);
         return new ResponseEntity<>(manager, HttpStatus.OK);
     }
+    @GetMapping("/getManagerByUsername/{username}")
+    public ResponseEntity<Optional<Manager>> getManagerByUsername(@PathVariable("username") String username) {
+        Optional<Manager> manager = managerService.getManagerByUsername(username);
+        return new ResponseEntity<>(manager, HttpStatus.OK);
+    }
 
     @DeleteMapping("/rem_manager/{id}")
     public ResponseEntity<?> rem_manager(@PathVariable("id") long id) {

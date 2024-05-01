@@ -53,6 +53,8 @@ public class JwtService  {
                        UserDetails userDetails
                                 ){
 
+        extraClaims.put("authorities", userDetails.getAuthorities()); // Use authorities directly
+
         return  Jwts
                 .builder()
                 .setClaims(extraClaims)

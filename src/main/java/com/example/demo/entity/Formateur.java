@@ -19,7 +19,7 @@ import java.util.Set;
 @DiscriminatorValue("FORMATEUR")
 public class Formateur extends Person {
 
-
+    //list
     @Column
     private String Skills ;
 
@@ -31,8 +31,9 @@ public class Formateur extends Person {
 
 
 
-    @OneToMany(mappedBy = "formateur")
-    private Set<Course> courses=new HashSet<>() ;
+
+    @ManyToMany(mappedBy = "formateurs")
+    private Set<Formation> formations = new HashSet<>();
 
 //additional attributes :
 

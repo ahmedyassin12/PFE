@@ -7,14 +7,15 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
 
-public interface StudentDAO extends CrudRepository<Student,Integer>   {
+public interface StudentDAO extends CrudRepository<Student,Long>   {
 
 
-Optional<Student> findByEmail(String Email);
+Optional<Student> findStudentByEmail(String Email);
 
 
-Optional<Student> findBynom(String nom);
+Optional<Student> findStudentByNom(String nom);
 
 
+    Optional<Student> findStudentByUsername(String username);
 
 }

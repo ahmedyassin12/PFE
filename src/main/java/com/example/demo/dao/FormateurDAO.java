@@ -12,10 +12,12 @@ public interface FormateurDAO extends CrudRepository<Formateur,Long> {
 
 
 
-    Optional<Formateur> findByEmail(String Email);
+    Optional<Formateur> findFormateurByEmail(String Email);
 
 
-    Optional<Formateur> findBynom(String nom);
+    Optional<Formateur> findFormateurBynom(String nom);
 
+
+    Optional<Formateur> findFormateurByUsername(String username);
 
 }

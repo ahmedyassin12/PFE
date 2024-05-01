@@ -11,6 +11,7 @@ import java.util.Optional;
 
 
 @RestController
+@RequestMapping("/api/v1/Student")
 public class StudentController {
 
 
@@ -48,15 +49,22 @@ public class StudentController {
 
 
     }
+    @GetMapping("/getStudentByUsername/{username}")
+    public ResponseEntity<Student> getStudentById(@PathVariable("username") String username ) {
+
+        Student student = studentService.getStudentByUsername(username);
+
+        return new ResponseEntity<>(student, HttpStatus.OK);
+
+    }
     @GetMapping("/getStudentById/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable("id") int id) {
+    public ResponseEntity<Student> getStudentById(@PathVariable("id") Long id) {
 
         Student student = studentService.getstudentbyId(id);
         System.out.println("student  : " + student);
         return new ResponseEntity<>(student, HttpStatus.OK);
 
     }
-
 
     @PostMapping({"/createNewStudent"})
     public ResponseEntity<Student> createNewStudent(@RequestBody Student student) {
@@ -85,9 +93,10 @@ public class StudentController {
 
     }
 
+
     @DeleteMapping("/rem_student/{id}")
 
-    public ResponseEntity<?> rem_student(@PathVariable("id")  int id ){
+    public ResponseEntity<?> rem_student(@PathVariable("id")  Long id ){
 
         studentService.rem_student(id);
 return new ResponseEntity<>(HttpStatus.OK) ;

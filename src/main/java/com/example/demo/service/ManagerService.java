@@ -5,8 +5,10 @@ package com.example.demo.service;
 import com.example.demo.dao.ManagerDAO;
 import com.example.demo.entity.Manager;
 import com.example.demo.entity.Role;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -18,8 +20,11 @@ import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ManagerService {
 
+    @Autowired
+    private final PasswordEncoder passwordEncoder ;
     @Autowired
     private ManagerDAO managerRepository;
 
@@ -36,16 +41,14 @@ public class ManagerService {
 
         Manager manager =new Manager ().builder()
                 .nom("nietsche")
-                .password("hhh")
+                .password(passwordEncoder.encode("hhh") )
                 .dateNaissance(date)
                 .email("qmsldkjf@qsmdlkjf.km")
                 .phoneNumber("22977749")
                 .role(Role.MANAGER)
+                .username("mm")
+
                 .build();
-
-
-
-
 
         managerRepository.save(manager);
 
@@ -58,11 +61,15 @@ public class ManagerService {
     }
 
     public Optional<Manager> getManagerByEmail(String email) {
-        return managerRepository.findByEmail(email);
+        return managerRepository.findManagerByEmail(email);
 
     }
     public Optional<Manager> getManagerBynom(String nom) {
-        return managerRepository.findBynom(nom);
+        return managerRepository.findManagerBynom(nom);
+
+    }
+    public Optional<Manager> getManagerByUsername(String username) {
+        return managerRepository.findManagerByUsername(username);
 
     }
 

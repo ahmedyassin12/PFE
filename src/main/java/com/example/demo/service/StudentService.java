@@ -4,18 +4,23 @@ package com.example.demo.service;
 import com.example.demo.dao.StudentDAO;
 import com.example.demo.entity.Role;
 import com.example.demo.entity.Student;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
-
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class StudentService {
+
+    @Autowired
+    private final PasswordEncoder passwordEncoder ;
 
     @Autowired
    private StudentDAO studentDAO ;
@@ -32,7 +37,7 @@ public class StudentService {
 
     public Student getStudentByEmail(String Email  ){
 
-        Optional<Student> optional=studentDAO.findByEmail(Email) ;
+        Optional<Student> optional=studentDAO.findStudentByEmail(Email) ;
 
         Student stdnt ;
         if(optional.isPresent()){
@@ -51,7 +56,28 @@ public class StudentService {
 
 
     }
-    public Student getstudentbyId(int id ){
+    public Student getStudentByUsername(String username  ){
+
+        Optional<Student> optional=studentDAO.findStudentByUsername(username) ;
+
+        Student stdnt ;
+        if(optional.isPresent()){
+
+            stdnt = optional.get();
+
+        }
+
+        else {
+
+            throw new RuntimeException("Student not found for username  ::  "+username )  ;
+
+        }
+
+        return stdnt ;
+
+
+    }
+    public Student getstudentbyId(Long id ){
         Optional<Student> optional=studentDAO.findById(id) ;
 
         Student stdnt;
@@ -70,7 +96,7 @@ public class StudentService {
     }
     public Student getStudentbyNom(String nom  ){
 
-        Optional<Student> optional=studentDAO.findBynom(nom) ;
+        Optional<Student> optional=studentDAO.findStudentByNom(nom) ;
 
         Student stdnt ;
 
@@ -110,30 +136,24 @@ public class StudentService {
 
         Date date = dateFormat.parse(dateString);
 
-        Student student =new Student() ;
-
-        /* student.builder().nom("ssss")
-                .email("smlfjkqsmldjf")
-                .password("smdlfjkqs")
+        Student student =new Student().builder()
+                 .nom("ssss")
+                .email("smlfjkqsmldjf@sqf.com")
+                .password(passwordEncoder.encode("smdlfjkqs"))
                  .phoneNumber("2112058")
+                 .username("ss")
+                 .role(Role.STUDENT)
+                 .dateNaissance(date)
 
                 .build();
 
-*/
-        student.setNom("ssss");
-        student.setEmail("smlfjkqsmldjf");
-        student.setPassword("smdlfjkqs");
-        student.setPhoneNumber("2112058");
-        student.setDateNaissance(date);
-        student.setRole(Role.STUDENT);
         studentDAO.save(student);
-
 
 
     }
 
 
-    public void rem_student(int id ){
+    public void rem_student(Long id ){
 
         studentDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("student not found with id: " + id));

@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.dao.EnrollementDAO;
-import com.example.demo.entity.Enrollement;
+import com.example.demo.entity.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,7 @@ public class EnrollementService {
 
     @Autowired
     private EnrollementDAO enrollementDAO;
+
 
     public Iterable<Enrollement> getAllEnrollements() {
         return enrollementDAO.findAll();
@@ -31,9 +32,14 @@ public class EnrollementService {
     }
 
     public Enrollement createNewEnrollement(Enrollement enrollement) {
+
+
+
         enrollementDAO.save(enrollement);
         log.info("Enrollement {} is saved", enrollement.getEnrollement_id());
         return enrollement;
+
+
     }
 
     public void removeEnrollement(Long id) {

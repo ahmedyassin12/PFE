@@ -2,7 +2,9 @@ package com.example.demo.service;
 import com.example.demo.dao.FormateurDAO;
 import com.example.demo.entity.Formateur;
 import com.example.demo.entity.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,11 +12,13 @@ import java.util.Date;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class FormateurService {
 
 
 
-
+    @Autowired
+    private final PasswordEncoder passwordEncoder ;
 
         @Autowired
         private FormateurDAO formateurDAO ;
@@ -31,7 +35,7 @@ public class FormateurService {
 
         public Formateur getFormateurByEmail(String Email  ){
 
-            Optional<Formateur> optional=formateurDAO.findByEmail(Email) ;
+            Optional<Formateur> optional=formateurDAO.findFormateurByEmail(Email) ;
 
             Formateur formateur ;
             if(optional.isPresent()){
@@ -51,7 +55,7 @@ public class FormateurService {
         }
         public Formateur getFormateurByNom(String nom  ){
 
-            Optional<Formateur> optional=formateurDAO.findBynom(nom) ;
+            Optional<Formateur> optional=formateurDAO.findFormateurBynom(nom) ;
 
             Formateur formateur ;
 
@@ -73,6 +77,30 @@ public class FormateurService {
 
 
         }
+    public Formateur getFormateurByUsername(String username  ){
+
+        Optional<Formateur> optional=formateurDAO.findFormateurByUsername(username) ;
+
+        Formateur formateur ;
+
+        if(optional.isPresent()){
+
+            formateur = optional.get();
+
+
+        }
+
+        else {
+
+            throw new RuntimeException("formateur not found for name  ::  "+username  )  ;
+
+
+        }
+
+        return formateur ;
+
+
+    }
     public Formateur getFormateurById(long id  ){
 
         Optional<Formateur> optional=formateurDAO.findById(id) ;
@@ -115,10 +143,11 @@ public class FormateurService {
             Formateur formateur =new Formateur().builder()
                     .dateNaissance(date)
                     .email("qsdmlj@jj.kk")
-                    .password("hh")
+                    .password(passwordEncoder.encode("hh"))
                     .nom("3abes")
                     .phoneNumber("21123058")
                     .role(Role.Formateur)
+                    .username("ff")
             .build() ;
 
 

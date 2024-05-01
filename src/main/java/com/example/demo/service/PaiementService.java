@@ -5,6 +5,7 @@ import com.example.demo.entity.Paiement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,28 +19,73 @@ public class PaiementService {
     public List<Paiement> getAllPaiements() {
         return paiementRepository.findAll();
     }
+    public Paiement getpaiementById(long id ){
+        Optional<Paiement> optional=paiementRepository.findById(id) ;
 
-    public Optional<Paiement> getPaiementById(long paiementId) {
+        Paiement paiement;
+        if(optional.isPresent()) paiement=optional.get();
+        else {
 
-        return paiementRepository.findById(paiementId);
+            throw new RuntimeException("paiement not found for id  ::  "+id  )  ;
+
+
+        }
+
+        return paiement ;
+
+
+
+    }
+    public List<Paiement> getPaiementByStudent_id(long student_Id) {
+
+        List<Paiement> paiements = paiementRepository.findByStudent_id(student_Id);
+
+
+        if (paiements.isEmpty()) {
+            throw new RuntimeException("Paiments not found for student_id :: " + student_Id);
+        }
+        return paiements;
+
 
     }
 
+   /* public List<Paiement>  getPaimentbyEnrollement_id(long id  ){
+
+
+
+        List<Paiement> paiements = paiementRepository.findByEnrollement_EnrollementId(id);
+
+
+
+        if (paiements.isEmpty()) {
+            throw new RuntimeException("Paiments not found for enrollement_id :: " + id);
+        }
+
+
+
+
+
+        return paiements ;
+
+
+    }*/
     public Paiement createPaiement(Paiement paiement) {
         return paiementRepository.save(paiement);
     }
 
-    public Paiement updatePaiement(long paiementId, Paiement updatedPaiement) {
-        if (paiementRepository.existsById(paiementId)) {
-            updatedPaiement.setPaiement_id(paiementId);
-            return paiementRepository.save(updatedPaiement);
+    public Paiement updatePaiement( Paiement paiment) {
+        if (paiment == null ) {
+            throw new IllegalArgumentException("Invalid enrollement ID for update");
         }
-        return null; // Handle non-existing paiement
+        paiementRepository.save(paiment) ;
+        return paiment;
+
     }
 
     public void deletePaiement(long paiementId) {
         paiementRepository.deleteById(paiementId);
     }
+
 
 
 

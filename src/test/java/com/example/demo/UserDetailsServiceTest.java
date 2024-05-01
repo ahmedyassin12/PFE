@@ -18,26 +18,17 @@ import static org.mockito.ArgumentMatchers.anyString;
 public class UserDetailsServiceTest {
 
     @Test
-    public void testLoadUserByUsername_WhenUserExists_ExpectUserDetails() {
+    public void test_findByEmail() {
         // Arrange
-        String email = "qsdjj.kk";
-        String password = "namnamnam";
-        PersonDAO repository = Mockito.mock(PersonDAO.class);
-        Mockito.when(repository.findByEmail(email))
-                .thenReturn(Optional.of(new Person(email, password)));
-        ApplicationConfig applicationConfig = new ApplicationConfig();
-        applicationConfig.setRepository(repository);
-        UserDetailsService userDetailsService =  applicationConfig.UserDetailsService();
 
-        // Act
-        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+        PersonDAO mockRepository =  Mockito.mock(PersonDAO.class) ;
 
-        // Assert
-       if( email.equals(userDetails.getUsername()) ) {
-            System.out.println("email working ");
-           System.out.println("email = " +userDetails.getUsername());
-        }
-        if(password.equals(userDetails.getPassword()))             System.out.println("pass working ");
+        String email = "trao@kekw.hehe";
+
+        Person expectedPerson = new Person(email,"password") ;
+
+
+
 
     }
 

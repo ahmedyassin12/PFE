@@ -25,10 +25,12 @@ return ResponseEntity.ok(service.register(request)) ;
     }
 
     @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> authenticate ( @RequestBody AuthenticationRequest request ) throws BadRequestException {
+    public ResponseEntity<AuthenticationResponse> authenticate
+            ( @RequestBody AuthenticationRequest request ) throws BadRequestException {
 
         //
         return ResponseEntity.ok(service.authenticate(request)) ;
+
 
     }
 

@@ -52,10 +52,16 @@ public class FormateurController {
         public ResponseEntity<Formateur> getFormateurByid(@PathVariable("id") int id) {
 
             Formateur formateur = formateurService.getFormateurById(id);
-            System.out.println("formateur  : " + formateur);
             return new ResponseEntity<>(formateur, HttpStatus.OK);
 
         }
+    @GetMapping("/getFormateurByUsername/{username}")
+    public ResponseEntity<Formateur> getFormateurByUsername(@PathVariable("username") String username) {
+
+        Formateur formateur = formateurService.getFormateurByUsername(username);
+        return new ResponseEntity<>(formateur, HttpStatus.OK);
+
+    }
 
 
         @PostMapping({"/createNewFormateur"})
@@ -72,7 +78,6 @@ public class FormateurController {
         public ResponseEntity<Formateur> getFormateurByNom(@PathVariable("nom") String nom) {
 
             Formateur formateur = formateurService.getFormateurByNom(nom);
-            System.out.println("formateur : " + formateur);
             return new ResponseEntity<>(formateur, HttpStatus.OK);
 
         }

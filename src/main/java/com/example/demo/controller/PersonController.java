@@ -1,60 +1,67 @@
 package com.example.demo.controller;
 
+import com.example.demo.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;import org.springframework.web.bind.annotation.*;
 import com.example.demo.entity.Person;
-import com.example.demo.dao.PersonDAO;
+import java.util.Optional;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 public class PersonController {
 
+
     @Autowired
-    private PersonDAO userRepository;
+    private PersonService userService;
 
     @GetMapping("/getAllUsers")
-    public ResponseEntity<List<Person>> getAllUsers() {
-        List<Person> users = userRepository.findAll();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<Iterable<Person>> getAllUsers() {
+
+        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+
     }
 
     @GetMapping("/getUserById/{id}")
     public ResponseEntity<Person> getUserById(@PathVariable Long id) {
-        Person user = userRepository.findById(id).orElseThrow(() ->  new RuntimeException("User not found"));
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(userService.getUserbyId(id), HttpStatus.OK);
     }
 
-    @GetMapping("/findByEmail/{email}")
-    public ResponseEntity<Person> findByEmail(@PathVariable String email) {
-        Person user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    @GetMapping("/findUserByEmail/{email}")
+    public ResponseEntity<Person> findUserByEmail(@PathVariable String email) {
+
+        return new ResponseEntity<>(userService.findUserByEmail(email), HttpStatus.OK);
 
     }
-    @PostMapping ("/createUser")
-    public ResponseEntity<Person> createUser(@RequestBody Person user) {
-        Person savedUser = userRepository.save(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    @GetMapping("/getUserByUsername/{username}")
+    public ResponseEntity<Person> getUserByUsername(@PathVariable String username) {
+
+        return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
+
+
+    }
+    @PostMapping ("/createNewUser")
+    public ResponseEntity<Person> createNewUser(@RequestBody Person user) {
+        return new ResponseEntity<>(userService.createNewUser(user), HttpStatus.CREATED);
     }
 
-    @PutMapping("/updateUser/{id}")
-    public ResponseEntity<Person> updateUser(@PathVariable Long id, @RequestBody Person userDetails) {
-        Person user = userRepository.findById(id).orElseThrow(() ->  new RuntimeException("User not found"));
-        user.setEmail(userDetails.getEmail());
-        user.setPassword(userDetails.getPassword());
-        user.setNom(userDetails.getNom());
-        user.setPhoneNumber(userDetails.getPhoneNumber());
-        user.setDateNaissance(userDetails.getDateNaissance());
-        Person updatedUser = userRepository.save(user);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    @PutMapping("/updateUser")
+    public ResponseEntity<Person> updateUser(@RequestBody Optional<Person>  updatedUser ) {
+        Person user =updatedUser.orElseThrow(() -> new IllegalArgumentException("Invalid Student Email for update"));
+
+
+        return new ResponseEntity<>(userService.update_user(user), HttpStatus.OK);
+
+
+
     }
 
     @DeleteMapping("/deleteUser/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        Person user = userRepository.findById(id).orElseThrow(() ->  new RuntimeException("User not found"));
-        userRepository.delete(user);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        userService.rem_user(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
+
 }

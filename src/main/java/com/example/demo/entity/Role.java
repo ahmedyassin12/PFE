@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,6 +45,9 @@ public enum Role {
 
     @Getter
     private final Set<Permission> permissions;
+
+
+
 
     public List<SimpleGrantedAuthority> getAuthorities() {
         var authorities = getPermissions()

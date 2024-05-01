@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,26 +26,18 @@ public class Course {
 
     @Column(name = "Description")
     private String description;
-
-
     @Column(name = "date")
     private Date date;
 
 
 
-
-    @OneToMany(mappedBy = "course")
-    private Set<Enrollement>enrollements=new HashSet<>();
-
-
     @ManyToOne
-    @JoinColumn(name = "formateur_id")
-    private Formateur formateur ;
-
+    @JoinColumn(name ="Formation_id" )
+    private Formation formation ;
 
 
     @OneToMany(mappedBy = "course")
-    private Set<Section> sections=new HashSet<>() ;
+    private Set<Lecture> lectures=new HashSet<>() ;
 
 
 

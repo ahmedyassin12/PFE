@@ -28,10 +28,13 @@ public class Person implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id ;
+        private Long id ;
 
-    @Column(name="email",nullable = false,unique = true)
+    @Column(name="email",nullable = false)
     private String email;
+
+    @Column(name="username",nullable = false,unique = true)
+    private String username ;
 
     @Column(name="password",nullable = false)
     private String password;
@@ -48,21 +51,23 @@ public class Person implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return role.getAuthorities();
     }
 
-    public Person(String email, String password) {
-        this.email=email;
+    public Person(String username, String password) {
+        this.username=username;
         this.password=password;
 
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {

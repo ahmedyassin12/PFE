@@ -2,11 +2,8 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-
 import java.util.HashSet;
 import java.util.Set;
-
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

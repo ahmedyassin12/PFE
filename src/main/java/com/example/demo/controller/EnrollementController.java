@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+
 public class EnrollementController {
 
     @Autowired
@@ -27,6 +28,7 @@ public class EnrollementController {
     @PostMapping("/createNewEnrollement")
     public Enrollement createNewEnrollement(@RequestBody Enrollement enrollement) {
         return enrollementService.createNewEnrollement(enrollement);
+
     }
 
     @DeleteMapping("/removeEnrollement/{id}")
@@ -34,8 +36,11 @@ public class EnrollementController {
         enrollementService.removeEnrollement(id);
     }
 
+
     @PutMapping("/updateEnrollement")
     public Enrollement updateEnrollement(@RequestBody Enrollement enrollement) {
+
         return enrollementService.updateEnrollement(enrollement);
+
     }
 }

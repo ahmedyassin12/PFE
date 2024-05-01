@@ -17,8 +17,6 @@ public class Ressources {
     @Column(name = "ressource_url")
     private String ressource_url;
 
-
-
     @OneToOne
     @JoinColumn(name="lecture_id")
     private Lecture lecture ;

@@ -9,10 +9,11 @@ import java.util.Optional;
 
 public interface ManagerDAO extends CrudRepository<Manager,Long> {
 
-    Optional<Manager> findByEmail(String Email);
+    Optional<Manager> findManagerByEmail(String Email);
 
-    Optional<Manager> findBynom(String nom);
+    Optional<Manager> findManagerBynom(String nom);
 
 
+    Optional<Manager> findManagerByUsername(String username);
 
 }

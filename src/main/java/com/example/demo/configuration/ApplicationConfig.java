@@ -3,6 +3,7 @@ package com.example.demo.configuration;
 import com.example.demo.dao.PersonDAO;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,27 +17,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
-@Service
 @Configuration
-@RequiredArgsConstructor
-@Data
 public class ApplicationConfig {
-
-
+    @Autowired
     private PersonDAO repository ;
-
-
-
-
    @Bean
     public UserDetailsService UserDetailsService(){
 
-        return username -> repository.findByEmail(username)
+        return username -> repository.findByUsername(username)
                 .orElseThrow(()->new UsernameNotFoundException ("User not found") ) ;
 
-
     }
-
         @Bean
         public AuthenticationProvider authenticationProvider(){
 
@@ -48,13 +39,8 @@ public class ApplicationConfig {
         }
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-
-
         return config.getAuthenticationManager();
-
-
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {

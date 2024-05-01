@@ -26,36 +26,39 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     public AuthenticationResponse register(RegisterRequest request) {
-
         Person user;
-        if (request.getRole().equals("STUDENT")) {
+        if (request.getRole().name().equals("STUDENT")) {
             user = Student.builder()
                     .nom(request.getNom())
                     .email(request.getEmail())
+                    .username(request.getUsername())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .phoneNumber(request.getPhoneNumber())
                     .dateNaissance(request.getDateNaissance())
-
+                    .role(request.getRole())
                     .build();
-            } else if (request.getRole().equals("Formateur")) {
+            } else if (request.getRole().name().equals("Formateur")) {
             user = Formateur.builder()
                     .nom(request.getNom())
                     .email(request.getEmail())
+                    .username(request.getUsername())
                     .phoneNumber(request.getPhoneNumber())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .dateNaissance(request.getDateNaissance())
                     .availability(request.getAvailability())
                     .Skills(request.getSkills())
+                    .role(request.getRole())
                     .build();
-        } else if (request.getRole().equals("MANAGER")) {
+        } else if (request.getRole().name().equals("MANAGER")) {
+
             user = Manager.builder()
                     .nom(request.getNom())
                     .email(request.getEmail())
+                    .username(request.getUsername())
                     .password(passwordEncoder.encode(request.getPassword()))
                     .phoneNumber(request.getPhoneNumber())
                     .dateNaissance(request.getDateNaissance())
-
-
+                    .role(request.getRole())
                     .build();
         } else {
             throw new IllegalArgumentException("Invalid user type");
@@ -73,26 +76,27 @@ return AuthenticationResponse.builder()
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws BadRequestException {
 
+        System.out.println("username = "+request.getUsername() +" pass = "+request.getPassword());
         try {
-
-            System.out.println("user : "+request.getEmail()+" + "+ request.getPassword()+", is retreated ");
-
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            request.getEmail(),
+                            request.getUsername(),
                             request.getPassword()
                     )
 
+
             );
-            System.out.println("user : "+request.getEmail()+", is retreated ");
+
 
         } catch (BadCredentialsException e) {
+            System.out.println("username = "+request.getUsername() +" pass = "+request.getPassword());
+
             throw new BadRequestException("Invalid email or password");
         }
 
-        System.out.println("user : "+request.getEmail()+", is retreated ");
-        var user = repository.findByEmail(request.getEmail()).orElseThrow(() ->
-                new UsernameNotFoundException("User not found with email address: " + request.getEmail())
+
+        var user = repository.findByUsername(request.getUsername()).orElseThrow(() ->
+                new UsernameNotFoundException("User not found with email address: " + request.getUsername())
         );
 
         var jwtToken = jwtService.generateToken(user);
@@ -100,5 +104,8 @@ return AuthenticationResponse.builder()
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+
     }
+
+
 }

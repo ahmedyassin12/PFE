@@ -26,16 +26,16 @@ public class Paiement {
     @Column(name = "paimentDate")
     private Date paimentDate ;
 
-    @Column(name = "Status")
-    private String Status ;
+
+
+    @ManyToOne
+    @JoinColumn(name="enrollement_id")
+    private Enrollement enrollement ;
 
 
     @ManyToOne
     @JoinColumn(name="student_id")
     private Student student ;
-
-
-
 
 
 
